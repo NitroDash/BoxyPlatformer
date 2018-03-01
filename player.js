@@ -98,10 +98,10 @@ class Player extends Entity {
             this.knockbackTime=0;
             this.dy=0;
             if (keys[0].isDown) {
-                this.dy=-CLIMB_SPEED;
+                this.rect.translate(0,-CLIMB_SPEED);
             }
             if (keys[1].isDown) {
-                this.dy=CLIMB_SPEED;
+                this.rect.translate(0,CLIMB_SPEED);
             }
             if (this.rect.getCenterY()<=this.holdWall.rect.getTop()) {
                 this.dy=-JUMP_SPEED/2;

@@ -63,7 +63,7 @@ var reset=function() {
 var update=function() {
     if (loading) {return;}
     if (slideX!=0) {
-        slideX-=10;
+        slideX-=20;
         if (slideX<=0) {
             slideX=0;
         }
