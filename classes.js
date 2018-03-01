@@ -171,6 +171,20 @@ class MoveHurtWall extends MoveWall {
     }
 }
 
+class Text extends Wall {
+    constructor(x,y,text) {
+        super(x,y,0,0);
+        this.text=text;
+    }
+    
+    update() {}
+    
+    render(ctx) {
+        ctx.fillStyle="#000";
+        ctx.fillText(this.text,this.rect.x,this.rect.y);
+    }
+}
+
 class Entity {
     constructor(x,y,w,h) {
         this.rect=new Rect(x,y,w,h);

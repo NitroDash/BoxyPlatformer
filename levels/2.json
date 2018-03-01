@@ -1,1 +1,1 @@
-{"rects":[{"type":0,"x":0,"y":550,"w":800,"h":50}],"spawn":{"x":50,"y":530}}
+{"rects":[{"x":0,"y":550,"w":800,"h":50,"type":0},{"x":375,"y":470,"w":50,"h":80,"type":0},{"type":-1,"x":180,"y":200,"text":"Press space again to double jump"}],"spawn":{"x":50,"y":530}}

@@ -3,7 +3,7 @@ var walls;
 var player;
 
 var level=0;
-var numLevels=2;
+var numLevels=5;
 
 var drawToBackground=false;
 var bg_canvas;
@@ -18,6 +18,8 @@ var init=function() {
     bg_canvas.width=800;
     bg_canvas.height=600;
     bg_ctx=bg_canvas.getContext("2d");
+    ctx.font="30px Arial";
+    bg_ctx.font="30px Arial";
     walls=[];
     player=new Player(200,440);
     loadLevel(level,gameLoop);
@@ -44,6 +46,8 @@ var makeWall=function(rect) {
         return new MoveWall(rect.x,rect.y,rect.w,rect.h,rect.dx,rect.dy,rect.t);
     } else if (rect.type==3) {
         return new MoveHurtWall(rect.x,rect.y,rect.w,rect.h,rect.dx,rect.dy,rect.t);
+    } else if (rect.type==-1) {
+        return new Text(rect.x,rect.y,rect.text);
     }
 }
 
