@@ -24,7 +24,7 @@ var init=function() {
 }
 
 var loadLevel=function(id,callback) {
-    loadJSON("/levels/"+id+".json",function(level) {
+    loadJSON("levels/"+id+".json",function(level) {
         walls.splice(0,walls.length);
         for (var i=0; i<level.rects.length; i++) {
             walls.push(makeWall(level.rects[i]));
