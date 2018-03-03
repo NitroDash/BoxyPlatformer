@@ -2,8 +2,11 @@ var ctx;
 var walls;
 var player;
 
+var gold=0;
+var goldDisplayTimer=0;
+
 var level=0;
-var numLevels=5;
+var numLevels=11;
 
 var drawToBackground=false;
 var bg_canvas;
@@ -48,6 +51,8 @@ var makeWall=function(rect) {
         return new MoveHurtWall(rect.x,rect.y,rect.w,rect.h,rect.dx,rect.dy,rect.t);
     } else if (rect.type==-1) {
         return new Text(rect.x,rect.y,rect.text);
+    } else if (rect.type==-2) {
+        return new Gold(rect.x,rect.y);
     }
 }
 
@@ -65,6 +70,9 @@ var reset=function() {
 }
 
 var update=function() {
+    if (goldDisplayTimer>0) {
+        goldDisplayTimer--;
+    }
     if (loading) {return;}
     if (slideX!=0) {
         slideX-=20;
@@ -88,12 +96,14 @@ var update=function() {
         }
     }
     if (!player.dead&&player.rect.getRight()>=800) {
-        if (level>=numLevels) {
+        if (level>numLevels) {
             player.rect.x=800-player.rect.w;
         } else {
             drawToBackground=true;
             loading=true;
-            loadLevel(++level,function() {
+            awardGold();
+            level++;
+            loadLevel((level==numLevels+1)?"end":level,function() {
                 loading=false;
                 slideX=800;
             });
@@ -101,6 +111,15 @@ var update=function() {
     }
     for (var i=0; i<keys.length; i++) {
         keys[i].isPressed=false;
+    }
+}
+
+var awardGold=function() {
+    for (var i=0; i<walls.length; i++) {
+        if (walls[i].isGold&&walls[i].captured) {
+            gold++;
+            goldDisplayTimer=100;
+        }
     }
 }
 
@@ -125,6 +144,11 @@ var render=function() {
     player.render(ctx);
     if (slideX!=0) {
         ctx.translate(-slideX,0);
-        return;
+    }
+    if (goldDisplayTimer>0) {
+        ctx.fillStyle="#aa0";
+        ctx.fillRect(10,10,20,20);
+        ctx.fillStyle="#000";
+        ctx.fillText("x "+((goldDisplayTimer>60)?gold-1:gold),40,30);
     }
 }

@@ -185,6 +185,42 @@ class Text extends Wall {
     }
 }
 
+class Gold extends Wall {
+    constructor(x,y) {
+        super(x,y,10,10);
+        this.baseX=x;
+        this.baseY=y;
+        this.isGold=true;
+        this.reset();
+    }
+    
+    reset() {
+        this.animTheta=0;
+        this.captured=false;
+        this.rect.x=this.baseX;
+    }
+    
+    update() {
+        if (this.captured) {
+            this.animTheta+=0.07;
+            this.rect.moveTo(player.rect.x+5+25*Math.cos(this.animTheta),player.rect.y+5+25*Math.sin(this.animTheta));
+        } else {
+            this.animTheta+=0.05;
+            this.rect.y=this.baseY+5*Math.sin(this.animTheta);
+            if (this.rect.intersects(player.rect)) {
+                this.captured=true;
+                this.animTheta=Math.atan((this.rect.getCenterY()-player.rect.getCenterY())/(this.rect.getCenterX()-player.rect.getCenterX()));
+                this.animTheta+=(this.rect.getCenterX()>player.rect.getCenterX())?0:Math.PI;
+            }
+        }
+    }
+    
+    render(ctx) {
+        ctx.fillStyle="#aa0";
+        ctx.fillRect(this.rect.getLeft(),this.rect.getTop(),this.rect.w,this.rect.h);
+    }
+}
+
 class Entity {
     constructor(x,y,w,h) {
         this.rect=new Rect(x,y,w,h);
