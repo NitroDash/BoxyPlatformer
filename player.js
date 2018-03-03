@@ -30,6 +30,7 @@ class Player extends Entity {
         this.platformDy=0;
         this.doubleJumped=false;
         this.dead=false;
+        this.prevVelWall=null;
     }
     
     die() {
@@ -129,11 +130,12 @@ class Player extends Entity {
         }
         this.grounded=false;
         this.holdWall=null;
+        this.prevVelWall=this.velWall;
         this.velWall=null;
     }
     
     hitFloor(rect) {
-        if (rect.dy<=this.dy||rect==this.velWall) {
+        if (rect.dy<=this.dy||rect==this.prevVelWall) {
             this.dy=0;
             this.dx=Math.max(-WALK_SPEED,Math.min(WALK_SPEED,this.dx));
             this.grounded=true;
