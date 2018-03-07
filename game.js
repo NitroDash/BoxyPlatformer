@@ -6,7 +6,7 @@ var gold=0;
 var goldDisplayTimer=0;
 
 var level=0;
-var numLevels=11;
+var numLevels=18;
 
 var drawToBackground=false;
 var bg_canvas;
