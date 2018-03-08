@@ -5,6 +5,10 @@ var player;
 var gold=0;
 var goldDisplayTimer=0;
 
+var folder="levels/";
+
+var hardDefault=false;
+
 var level=0;
 var numLevels=18;
 
@@ -25,11 +29,14 @@ var init=function() {
     bg_ctx.font="30px Arial";
     walls=[];
     player=new Player(200,440);
+    if (hardDefault) {
+        folder="hard/";
+    }
     loadLevel(level,gameLoop);
 }
 
 var loadLevel=function(id,callback) {
-    loadJSON("levels/"+id+".json",function(level) {
+    loadJSON(folder+id+".json",function(level) {
         walls.splice(0,walls.length);
         for (var i=0; i<level.rects.length; i++) {
             walls.push(makeWall(level.rects[i]));
@@ -103,6 +110,9 @@ var update=function() {
             loading=true;
             awardGold();
             level++;
+            if (level==6&&keys[5].isDown) {
+                folder="hard/";
+            }
             loadLevel((level==numLevels+1)?"end":level,function() {
                 loading=false;
                 slideX=800;

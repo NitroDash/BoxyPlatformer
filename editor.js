@@ -40,6 +40,14 @@ var gameLoop=function() {
     requestAnimationFrame(gameLoop);
 }
 
+var loadLevel=function(json) {
+    var level=json;//JSON.parse(json);
+    walls.splice(0,walls.length);
+    for (var i=0; i<level.rects.length; i++) {
+        walls.push(new Wall(level.rects[i].x,level.rects[i].y,level.rects[i].w,level.rects[i].h,level.rects[i].type));
+    }
+}
+
 var update=function() {
     var speed=(keys[5].isDown)?5:1;
     if (keys[0].isDown) {
