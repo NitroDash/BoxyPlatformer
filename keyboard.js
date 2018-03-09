@@ -39,3 +39,19 @@ function keyboard(keyCode) {
   );
   return key;
 }
+
+function keyGroup(key1,key2) {
+    var key={};
+    key.one=keyboard(key1);
+    key.two=keyboard(key2);
+    key.isDown=function() {
+        return (key.one.isDown||key.two.isDown);
+    }
+    key.isPressed=function() {
+        return (key.one.isPressed||key.two.isPressed);
+    }
+    key.isUp=function() {
+        return !key.isDown();
+    }
+    return key;
+}

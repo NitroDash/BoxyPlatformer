@@ -1,4 +1,4 @@
-var keys=[keyboard(38),keyboard(40),keyboard(37),keyboard(39),keyboard(32),keyboard(16)];
+var keys=[keyGroup(38,87),keyGroup(40,83),keyGroup(37,65),keyGroup(39,68),keyboard(32),keyboard(16)];
 
 var WALK_SPEED=3;
 var GRAVITY=0.5;
@@ -62,14 +62,14 @@ class Player extends Entity {
         }
         this.doubleJumped=false;
         if (this.knockbackTime==0) {
-            if (keys[2].isDown) {
+            if (keys[2].isDown()) {
                 if (this.dx>-WALK_SPEED) {
                     this.dx-=WALK_SPEED;
                     if (this.dx<-WALK_SPEED) {
                         this.dx=-WALK_SPEED;
                     }
                 }
-            } else if (keys[3].isDown) {
+            } else if (keys[3].isDown()) {
                 if (this.dx<WALK_SPEED) {
                     this.dx+=WALK_SPEED;
                     if (this.dx>WALK_SPEED) {
@@ -98,10 +98,10 @@ class Player extends Entity {
         } else if (this.holdWall!=null) {
             this.knockbackTime=0;
             this.dy=0;
-            if (keys[0].isDown) {
+            if (keys[0].isDown()) {
                 this.rect.translate(0,-CLIMB_SPEED);
             }
-            if (keys[1].isDown) {
+            if (keys[1].isDown()) {
                 this.rect.translate(0,CLIMB_SPEED);
             }
             if (this.rect.getCenterY()<=this.holdWall.rect.getTop()) {
