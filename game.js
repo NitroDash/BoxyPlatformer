@@ -19,6 +19,10 @@ var slideX=0;
 
 var loading=false;
 
+var time=0;
+var lastTime=0;
+var hasStarted=false;
+
 var init=function() {
     ctx=document.getElementById("canvas").getContext("2d");
     bg_canvas=document.createElement("canvas");
@@ -36,6 +40,7 @@ var init=function() {
 }
 
 var loadLevel=function(id,callback) {
+    pauseTime();
     loadJSON(folder+id+".json",function(level) {
         walls.splice(0,walls.length);
         for (var i=0; i<level.rects.length; i++) {
@@ -64,6 +69,11 @@ var makeWall=function(rect) {
 }
 
 var gameLoop=function() {
+    if (lastTime==1) {
+        startTime();
+    } else if (lastTime!=0) {
+        addTime();
+    }
     update();
     render();
     window.requestAnimationFrame(gameLoop);
@@ -85,6 +95,9 @@ var update=function() {
         slideX-=20;
         if (slideX<=0) {
             slideX=0;
+            if (level<=numLevels) {
+                unpauseTime();
+            }
         }
         return;
     }
@@ -121,6 +134,15 @@ var update=function() {
     }
     for (var i=0; i<keys.length; i++) {
         keys[i].isPressed=false;
+    }
+    if (!hasStarted) {
+        for (var i=0; i<keys.length; i++) {
+            if ((i<=3&&keys[i].isDown())||(i>3&&keys[i].isDown)) {
+                hasStarted=true;
+                unpauseTime();
+                break;
+            }
+        }
     }
 }
 
@@ -161,4 +183,49 @@ var render=function() {
         ctx.fillStyle="#000";
         ctx.fillText("x "+((goldDisplayTimer>60)?gold-1:gold),40,30);
     }
+    ctx.fillStyle="#fff";
+    ctx.fillRect(640,5,150,30);
+    ctx.fillStyle="#000";
+    ctx.fillText(formatTime(time),650,30);
+}
+
+var startTime=function() {
+    if (lastTime!=0) {
+        lastTime=new Date().getTime();
+    }
+}
+
+var addTime=function() {
+    var current=new Date().getTime();
+    time+=current-lastTime;
+    lastTime=current;
+}
+
+var pauseTime=function() {
+    lastTime=0;
+}
+
+var unpauseTime=function() {
+    lastTime=1;
+    startTime();
+}
+
+var padZeroes=function(n,zeroes) {
+    var result=n+"";
+    while (result.length<zeroes) {
+        result="0"+result;
+    }
+    return result;
+}
+
+var formatTime=function(time) {
+    var result="";
+    result+=padZeroes(Math.floor(time/60000),2);
+    result+=":";
+    time%=60000;
+    result+=padZeroes(Math.floor(time/1000),2);
+    result+=".";
+    time%=1000;
+    result+=padZeroes(time,3);
+    return result;
 }
