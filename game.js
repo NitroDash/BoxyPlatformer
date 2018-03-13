@@ -10,7 +10,7 @@ var folder="levels/";
 var hardDefault=false;
 
 var level=0;
-var numLevels=18;
+var numLevels=22;
 
 var drawToBackground=false;
 var bg_canvas;

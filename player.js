@@ -61,7 +61,7 @@ class Player extends Entity {
             return;
         }
         this.doubleJumped=false;
-        if (this.knockbackTime==0) {
+        if (this.knockbackTime==0&&this.holdWall==null) {
             if (keys[2].isDown()) {
                 if (this.dx>-WALK_SPEED) {
                     this.dx-=WALK_SPEED;
@@ -132,6 +132,11 @@ class Player extends Entity {
         this.holdWall=null;
         this.prevVelWall=this.velWall;
         this.velWall=null;
+        if (this.dy>=0&&this.rect.getTop()>=600) {
+            this.rect.y=-this.rect.h;
+        } else if (this.dy<=0&&this.rect.getBottom()<=0) {
+            this.rect.y=600;
+        }
     }
     
     hitFloor(rect) {
